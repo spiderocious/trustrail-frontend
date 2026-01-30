@@ -1,0 +1,817 @@
+{
+  "meta": {
+    "format": "httpie",
+    "version": "1.0.0",
+    "contentType": "collection",
+    "schema": "https://schema.httpie.io/1.0.0.json",
+    "docs": "https://httpie.io/r/help/export-from-httpie",
+    "source": "TrustRail Backend API - Complete Documentation"
+  },
+  "entry": {
+    "name": "TrustRail API",
+    "icon": {
+      "name": "default",
+      "color": "green"
+    },
+    "description": "Complete API documentation for TrustRail BNPL Platform. Base URL: http://localhost:3000",
+    "auth": {
+      "type": "none"
+    },
+    "requests": [
+      {
+        "name": "=== HEALTH CHECK ===",
+        "url": "{{BASE_URL}}/health",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Basic health check for load balancers and monitoring"
+      },
+      {
+        "name": "=== BUSINESS AUTHENTICATION ===",
+        "url": "{{BASE_URL}}/api/auth/register",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"businessName\": \"Lagos State University\",\n  \"email\": \"admin@lasu.edu.ng\",\n  \"password\": \"SecurePassword123!\",\n  \"phoneNumber\": \"2348012345678\",\n  \"rcNumber\": \"RC123456\",\n  \"settlementAccountNumber\": \"0123456789\",\n  \"settlementBankCode\": \"058\",\n  \"settlementAccountName\": \"LASU Payment Account\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Register new business owner account. Creates PWA merchant and returns JWT token."
+      },
+      {
+        "name": "Auth - Business Login",
+        "url": "{{BASE_URL}}/api/auth/login",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"email\": \"admin@lasu.edu.ng\",\n  \"password\": \"SecurePassword123!\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Business owner login. Returns JWT token valid for 30 days."
+      },
+      {
+        "name": "Auth - Business Logout",
+        "url": "{{BASE_URL}}/api/auth/logout",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Logout (client-side token deletion for MVP). Requires authentication."
+      },
+      {
+        "name": "=== TRUSTWALLET MANAGEMENT ===",
+        "url": "{{BASE_URL}}/api/trustwallets",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"name\": \"Computer Science Department Fees\",\n  \"description\": \"Installment payment plan for CS students\",\n  \"installmentPlan\": {\n    \"totalAmount\": 100000,\n    \"downPaymentPercentage\": 20,\n    \"installmentCount\": 4,\n    \"frequency\": \"monthly\",\n    \"interestRate\": 0\n  },\n  \"approvalWorkflow\": {\n    \"autoApproveThreshold\": 85,\n    \"autoDeclineThreshold\": 40,\n    \"minTrustScore\": 50\n  }\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Create new TrustWallet with installment plan and approval rules. Requires authentication."
+      },
+      {
+        "name": "TrustWallet - List All",
+        "url": "{{BASE_URL}}/api/trustwallets?page=1&limit=20&isActive=true",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "20", "enabled": true},
+          {"name": "isActive", "value": "true", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "List all TrustWallets for authenticated business. Supports pagination and isActive filter."
+      },
+      {
+        "name": "TrustWallet - Get Single",
+        "url": "{{BASE_URL}}/api/trustwallets/{{TRUSTWALLET_ID}}",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get details of a specific TrustWallet. Requires ownership."
+      },
+      {
+        "name": "TrustWallet - Update",
+        "url": "{{BASE_URL}}/api/trustwallets/{{TRUSTWALLET_ID}}",
+        "method": "PUT",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"name\": \"Updated Department Fees\",\n  \"installmentPlan\": {\n    \"totalAmount\": 120000,\n    \"downPaymentPercentage\": 25,\n    \"installmentCount\": 5,\n    \"frequency\": \"monthly\",\n    \"interestRate\": 2\n  },\n  \"approvalWorkflow\": {\n    \"autoApproveThreshold\": 90,\n    \"autoDeclineThreshold\": 45,\n    \"minTrustScore\": 55\n  }\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Update TrustWallet configuration. All fields optional. Requires ownership."
+      },
+      {
+        "name": "TrustWallet - Delete (Soft)",
+        "url": "{{BASE_URL}}/api/trustwallets/{{TRUSTWALLET_ID}}",
+        "method": "DELETE",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Soft delete TrustWallet (sets isActive=false). Cannot delete if active applications exist."
+      },
+      {
+        "name": "=== APPLICATION MANAGEMENT ===",
+        "url": "{{BASE_URL}}/api/applications?page=1&limit=20",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "20", "enabled": true},
+          {"name": "trustWalletId", "value": "", "enabled": false},
+          {"name": "status", "value": "", "enabled": false},
+          {"name": "search", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "List all applications for authenticated business. Supports filters: trustWalletId, status, search."
+      },
+      {
+        "name": "Application - Get Single",
+        "url": "{{BASE_URL}}/api/applications/{{APPLICATION_ID}}",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get full application details including TrustWallet config, trust engine output, and payments."
+      },
+      {
+        "name": "Application - Manually Approve",
+        "url": "{{BASE_URL}}/api/applications/{{APPLICATION_ID}}/approve",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"reason\": \"Customer has good history with our institution\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Manually approve FLAGGED_FOR_REVIEW application. Creates PWA mandate and sends webhook."
+      },
+      {
+        "name": "Application - Manually Decline",
+        "url": "{{BASE_URL}}/api/applications/{{APPLICATION_ID}}/decline",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"reason\": \"Insufficient transaction history\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Manually decline FLAGGED_FOR_REVIEW application. Sends webhook notification."
+      },
+      {
+        "name": "=== PAYMENT MANAGEMENT ===",
+        "url": "{{BASE_URL}}/api/payments?page=1&limit=20",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "20", "enabled": true},
+          {"name": "trustWalletId", "value": "", "enabled": false},
+          {"name": "applicationId", "value": "", "enabled": false},
+          {"name": "status", "value": "", "enabled": false},
+          {"name": "startDate", "value": "", "enabled": false},
+          {"name": "endDate", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "List all payment transactions. Supports filters: trustWalletId, applicationId, status, date range."
+      },
+      {
+        "name": "Payment - Get Single",
+        "url": "{{BASE_URL}}/api/payments/{{TRANSACTION_ID}}",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get single payment transaction details with application and customer info."
+      },
+      {
+        "name": "=== WITHDRAWAL MANAGEMENT ===",
+        "url": "{{BASE_URL}}/api/withdrawals",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"trustWalletId\": \"TW-1234567890\",\n  \"amount\": 50000\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Request withdrawal of collected funds. Amount must not exceed available balance."
+      },
+      {
+        "name": "Withdrawal - List History",
+        "url": "{{BASE_URL}}/api/withdrawals?page=1&limit=20",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "20", "enabled": true},
+          {"name": "trustWalletId", "value": "", "enabled": false},
+          {"name": "status", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "List withdrawal history. Supports filters: trustWalletId, status."
+      },
+      {
+        "name": "=== DASHBOARD & ANALYTICS ===",
+        "url": "{{BASE_URL}}/api/dashboard/overview",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get overall business statistics: TrustWallets, applications, revenue, payments, recent activity."
+      },
+      {
+        "name": "Dashboard - Generate Reports",
+        "url": "{{BASE_URL}}/api/dashboard/reports?type=applications&format=json",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "type", "value": "applications", "enabled": true},
+          {"name": "format", "value": "json", "enabled": true},
+          {"name": "trustWalletId", "value": "", "enabled": false},
+          {"name": "startDate", "value": "", "enabled": false},
+          {"name": "endDate", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Generate downloadable reports. Types: applications, payments. Formats: json, csv."
+      },
+      {
+        "name": "Dashboard - TrustWallet Analytics",
+        "url": "{{BASE_URL}}/api/dashboard/trustwallet/{{TRUSTWALLET_ID}}/analytics?startDate=2024-01-01&endDate=2024-12-31",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "startDate", "value": "2024-01-01", "enabled": false},
+          {"name": "endDate", "value": "2024-12-31", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get detailed analytics for specific TrustWallet: approval rate, trust scores, revenue, payments."
+      },
+      {
+        "name": "=== WEBHOOK CONFIGURATION ===",
+        "url": "{{BASE_URL}}/api/webhooks/configure",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"webhookUrl\": \"https://your-business.com/webhooks/trustrail\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Configure business webhook URL for receiving payment notifications. Returns webhook secret for signature verification."
+      },
+      {
+        "name": "Webhook - PWA Receiver (Internal)",
+        "url": "{{BASE_URL}}/webhooks/pwa",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"request_ref\": \"PWA-REF-123\",\n  \"request_type\": \"mandate\",\n  \"details\": {\n    \"status\": \"Successful\",\n    \"meta\": {\n      \"event_type\": \"activate_mandate\",\n      \"signature_hash\": \"md5-hash-here\"\n    }\n  }\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Receive webhooks from PWA API (debit, credit, mandate activation). No auth - verified by signature."
+      },
+      {
+        "name": "=== PUBLIC ROUTES (Customer-Facing) ===",
+        "url": "{{BASE_URL}}/public/trustwallet/{{TRUSTWALLET_ID}}",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Get TrustWallet public information for customer application page. No authentication required."
+      },
+      {
+        "name": "Public - Submit Application",
+        "url": "{{BASE_URL}}/public/trustwallet/{{TRUSTWALLET_ID}}/apply",
+        "method": "POST",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "form",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {
+            "isMultipart": true,
+            "fields": [
+              {"name": "firstName", "value": "John", "enabled": true},
+              {"name": "lastName", "value": "Doe", "enabled": true},
+              {"name": "email", "value": "john.doe@example.com", "enabled": true},
+              {"name": "phoneNumber", "value": "2348012345678", "enabled": true},
+              {"name": "accountNumber", "value": "0123456789", "enabled": true},
+              {"name": "bankCode", "value": "058", "enabled": true},
+              {"name": "bvn", "value": "12345678901", "enabled": true},
+              {"name": "bankStatement", "value": "@/path/to/statement.csv", "enabled": true}
+            ]
+          },
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Customer submits application with bank statement CSV. Multipart form-data. Max file size: 5MB."
+      },
+      {
+        "name": "Public - Check Application Status",
+        "url": "{{BASE_URL}}/public/application/{{APPLICATION_ID}}/status",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Check application status for customer polling. Returns status, trust score, virtual account (if applicable)."
+      },
+      {
+        "name": "=== ADMIN ROUTES ===",
+        "url": "{{BASE_URL}}/admin/auth/login",
+        "method": "POST",
+        "headers": [
+          {"name": "Content-Type", "value": "application/json", "enabled": true}
+        ],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "none"
+        },
+        "body": {
+          "type": "text",
+          "file": {"name": ""},
+          "text": {
+            "value": "{\n  \"email\": \"admin@trustrail.com\",\n  \"password\": \"admin-password-from-env\"\n}",
+            "format": "application/json"
+          },
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Admin login. Uses hardcoded credentials from environment variables. Returns admin JWT token."
+      },
+      {
+        "name": "Admin - System Health",
+        "url": "{{BASE_URL}}/admin/health",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{ADMIN_TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Detailed system health check: database, PWA API, background jobs, system metrics. Requires admin auth."
+      },
+      {
+        "name": "Admin - PWA Health Check",
+        "url": "{{BASE_URL}}/admin/pwa-health",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{ADMIN_TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "Check PWA API connectivity and webhook status. Requires admin auth."
+      },
+      {
+        "name": "Admin - Audit Logs",
+        "url": "{{BASE_URL}}/admin/audit-logs?page=1&limit=50",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "50", "enabled": true},
+          {"name": "action", "value": "", "enabled": false},
+          {"name": "actorId", "value": "", "enabled": false},
+          {"name": "resourceType", "value": "", "enabled": false},
+          {"name": "resourceId", "value": "", "enabled": false},
+          {"name": "startDate", "value": "", "enabled": false},
+          {"name": "endDate", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{ADMIN_TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "View system audit logs with filters. Requires admin auth."
+      },
+      {
+        "name": "Admin - All Applications",
+        "url": "{{BASE_URL}}/admin/applications?page=1&limit=50",
+        "method": "GET",
+        "headers": [],
+        "queryParams": [
+          {"name": "page", "value": "1", "enabled": true},
+          {"name": "limit", "value": "50", "enabled": true},
+          {"name": "businessId", "value": "", "enabled": false},
+          {"name": "trustWalletId", "value": "", "enabled": false},
+          {"name": "status", "value": "", "enabled": false},
+          {"name": "minTrustScore", "value": "", "enabled": false},
+          {"name": "maxTrustScore", "value": "", "enabled": false},
+          {"name": "search", "value": "", "enabled": false},
+          {"name": "startDate", "value": "", "enabled": false},
+          {"name": "endDate", "value": "", "enabled": false}
+        ],
+        "pathParams": [],
+        "auth": {
+          "type": "bearer",
+          "credentials": {
+            "username": "",
+            "password": "{{ADMIN_TOKEN}}"
+          },
+          "target": "headers"
+        },
+        "body": {
+          "type": "none",
+          "file": {"name": ""},
+          "text": {"value": "", "format": "application/json"},
+          "form": {"isMultipart": false, "fields": []},
+          "graphql": {"query": "", "variables": ""}
+        },
+        "description": "View all applications across all businesses with advanced filters. Requires admin auth."
+      }
+    ]
+  }
+}
