@@ -115,7 +115,7 @@ export function DocumentUploadStep({
     registerMutation.mutate(registerPayload, {
       onSuccess: (response) => {
         // Login the user automatically
-        login(response.data.token, response.data.businessId);
+        login(response.data.token, response.data);
       },
       onError: (err: unknown) => {
         if (err instanceof ApiClientError) {
