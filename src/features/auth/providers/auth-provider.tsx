@@ -13,11 +13,12 @@ import {
   clearAuth,
 } from "../helpers/token-storage";
 import { ROUTES } from "@shared/constants/routes/routes";
+import { Anything } from "@shared/types";
 
 interface AuthContextValue {
   isAuthenticated: boolean;
   businessId: string | null;
-  login: (token: string, businessId: string) => void;
+  login: (token: string, data: Anything) => void;
   logout: () => void;
 }
 
@@ -40,8 +41,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setBusinessIdState(getBusinessId());
   }, []);
 
-  const login = (token: string, businessId: string) => {
-    setAuth(token, businessId);
+  const login = (token: string, data: Anything) => {
+    setAuth(token, data?.businessId, data);
     setAuthenticated(true);
     setBusinessIdState(businessId);
     navigate(ROUTES.DASHBOARD.ROOT);

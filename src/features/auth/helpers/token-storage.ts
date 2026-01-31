@@ -1,7 +1,10 @@
 // Pure functions for token management in localStorage
 
+import { Anything } from "../../../shared/types";
+
 const TOKEN_KEY = "trustrail_auth_token";
 const BUSINESS_ID_KEY = "trustrail_business_id";
+const USER_DATA_KEY = "trustrail_user_data";
 
 export function getToken(): string | null {
   return localStorage.getItem(TOKEN_KEY);
@@ -28,7 +31,7 @@ export function removeBusinessId(): void {
 }
 
 export function isAuthenticated(): boolean {
-  return getToken() !== null;
+  return getToken() !== null && getAuthData() !== null;
 }
 
 export function clearAuth(): void {
@@ -36,7 +39,26 @@ export function clearAuth(): void {
   removeBusinessId();
 }
 
-export function setAuth(token: string, businessId: string): void {
+export function saveAuthData(data: Anything) {
+  localStorage.setItem(USER_DATA_KEY, JSON.stringify(data));
+}
+
+export function getAuthData(): Anything | null {
+  const data = localStorage.getItem(USER_DATA_KEY);
+  return data ? JSON.parse(data) : null;
+}
+
+export function businessName(): string {
+  const data = getAuthData();
+  return data?.businessName || "";
+}
+
+export function setAuth(
+  token: string,
+  businessId: string,
+  data: Anything,
+): void {
   setToken(token);
   setBusinessId(businessId);
+  saveAuthData(data);
 }

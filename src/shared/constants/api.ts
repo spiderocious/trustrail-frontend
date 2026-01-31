@@ -18,4 +18,29 @@ export const API_ENDPOINTS = {
     UPDATE: (id: string) => `/api/trustwallets/${id}`,
     DELETE: (id: string) => `/api/trustwallets/${id}`,
   },
+  DASHBOARD: {
+    OVERVIEW: "/api/dashboard/overview",
+    REPORTS: "/api/dashboard/reports",
+    TRUSTWALLET_ANALYTICS: (id: string) =>
+      `/api/dashboard/trustwallet/${id}/analytics`,
+  },
+  APPLICATIONS: {
+    LIST: "/api/applications",
+    GET: (id: string) => `/api/applications/${id}`,
+    APPROVE: (id: string) => `/api/applications/${id}/approve`,
+    DECLINE: (id: string) => `/api/applications/${id}/decline`,
+  },
+  PAYMENTS: {
+    LIST: "/api/payments",
+    GET: (id: string) => `/api/payments/${id}`,
+  },
+  WITHDRAWALS: {
+    LIST: "/api/withdrawals",
+    CREATE: "/api/withdrawals",
+  },
+  PUBLIC: {
+    TRUSTWALLET: (id: string) => `/public/trustwallet/${id}`,
+    APPLY: (id: string) => `/public/trustwallet/${id}/apply`,
+    APPLICATION_STATUS: (id: string) => `/public/application/${id}/status`,
+  },
 } as const;

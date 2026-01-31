@@ -1,3 +1,5 @@
+Bearer token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJidXNpbmVzc0lkIjoiVFItQklaLTE3Njk3ODU5NzYyNDYiLCJlbWFpbCI6ImUyZS10ZXN0LTE3Njk3ODU5NzZAdGVzdC5jb20iLCJpYXQiOjE3Njk4NDM3MTYsImV4cCI6MTc3MjQzNTcxNn0.D_JmNjD5M4EmjTq2_PxL-w-urFAXv4lK17rEufLdI6Q
+
 # TrustRail Frontend API Integration Guide
 
 **Version:** 1.0.0
@@ -51,8 +53,42 @@ All API responses follow this consistent structure:
   "success": true,
   "data": {
     // Response payload varies by endpoint
-  },
-  "message": "Operation successful"
+    // Can be an object, array, or null
+  }
+}
+```
+
+**Note:** Most endpoints do NOT include a `message` field. Only authentication endpoints (register, login, logout) include a `message` field in successful responses.
+
+**List Endpoints Response Structure:**
+
+List endpoints (TrustWallets, Applications, Payments, Withdrawals) return data as an array with pagination:
+
+```json
+{
+  "success": true,
+  "data": [
+    // Array of items
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 100,
+    "totalPages": 5
+  }
+}
+```
+
+**Single Item Endpoints Response Structure:**
+
+Single item endpoints (Get TrustWallet, Get Application, etc.) return data as an object:
+
+```json
+{
+  "success": true,
+  "data": {
+    // Single item object
+  }
 }
 ```
 
@@ -199,6 +235,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
+**Note:** Logout endpoint is one of the few that includes a `message` field.
+
 **Implementation Notes:**
 - Backend is stateless (no token blacklist for MVP)
 - Delete token from client-side storage
@@ -274,6 +312,7 @@ A **TrustWallet** is an installment plan configuration that customers can apply 
     "name": "Computer Science Department Fees",
     "description": "Installment payment plan for CS students",
     "isActive": true,
+    "publicUrl": "http://localhost:3030/public/trustwallet/TW-1738259234567",
     "installmentPlan": {
       "totalAmount": 100000,
       "downPaymentPercentage": 20,
@@ -322,29 +361,40 @@ A **TrustWallet** is an installment plan configuration that customers can apply 
 ```json
 {
   "success": true,
-  "data": {
-    "trustWallets": [
-      {
-        "trustWalletId": "TW-1738259234567",
-        "name": "Computer Science Department Fees",
-        "isActive": true,
-        "installmentPlan": { /* ... */ },
-        "statistics": {
-          "totalApplications": 15,
-          "approvedApplications": 12,
-          "totalRevenue": 500000,
-          "availableBalance": 500000
-        }
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "totalItems": 1,
-      "totalPages": 1
+  "data": [
+    {
+      "trustWalletId": "TW-1738259234567",
+      "businessId": "BIZ-1738259123456",
+      "name": "Computer Science Department Fees",
+      "description": "Installment payment plan for CS students",
+      "isActive": true,
+      "publicUrl": "http://localhost:3030/public/trustwallet/TW-1738259234567",
+      "installmentPlan": {
+        "totalAmount": 100000,
+        "downPaymentPercentage": 20,
+        "downPaymentAmount": 20000,
+        "installmentCount": 4,
+        "installmentAmount": 20000,
+        "frequency": "monthly",
+        "interestRate": 0
+      },
+      "approvalWorkflow": {
+        "autoApproveThreshold": 85,
+        "autoDeclineThreshold": 40,
+        "minTrustScore": 50
+      },
+      "createdAt": "2026-01-30T12:00:00.000Z",
+      "updatedAt": "2026-01-30T12:00:00.000Z",
+      "_id": "507f1f77bcf86cd799439011",
+      "__v": 0
     }
-  },
-  "message": "TrustWallets retrieved successfully"
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -363,13 +413,30 @@ A **TrustWallet** is an installment plan configuration that customers can apply 
     "name": "Computer Science Department Fees",
     "description": "Installment payment plan for CS students",
     "isActive": true,
-    "installmentPlan": { /* full details */ },
-    "approvalWorkflow": { /* full details */ },
-    "statistics": { /* full stats */ },
+    "publicUrl": "http://localhost:3030/public/trustwallet/TW-1738259234567",
+    "installmentPlan": {
+      "totalAmount": 100000,
+      "downPaymentPercentage": 20,
+      "downPaymentAmount": 20000,
+      "installmentCount": 4,
+      "installmentAmount": 20000,
+      "frequency": "monthly",
+      "interestRate": 0
+    },
+    "approvalWorkflow": {
+      "autoApproveThreshold": 85,
+      "autoDeclineThreshold": 40,
+      "minTrustScore": 50
+    },
+    "statistics": {
+      "totalApplications": 0,
+      "approvedApplications": 0,
+      "totalRevenue": 0,
+      "availableBalance": 0
+    },
     "createdAt": "2026-01-30T12:00:00.000Z",
     "updatedAt": "2026-01-30T12:00:00.000Z"
-  },
-  "message": "TrustWallet retrieved successfully"
+  }
 }
 ```
 
@@ -405,8 +472,7 @@ A **TrustWallet** is an installment plan configuration that customers can apply 
 ```json
 {
   "success": true,
-  "data": null,
-  "message": "TrustWallet deleted successfully"
+  "data": null
 }
 ```
 
@@ -452,39 +518,105 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
 ```json
 {
   "success": true,
-  "data": {
-    "applications": [
-      {
+  "data": [
+    {
+      "applicationId": "APP-1738259345678",
+      "trustWalletId": "TW-1738259234567",
+      "trustWalletName": "Computer Science Department Fees",
+      "status": "FLAGGED_FOR_REVIEW",
+      "customerDetails": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phoneNumber": "2348087654321"
+      },
+      "trustEngineOutput": {
+        "outputId": "TEO-1738259400000",
         "applicationId": "APP-1738259345678",
         "trustWalletId": "TW-1738259234567",
-        "trustWalletName": "Computer Science Department Fees",
-        "status": "FLAGGED_FOR_REVIEW",
-        "customerDetails": {
-          "firstName": "John",
-          "lastName": "Doe",
-          "email": "john.doe@example.com",
-          "phoneNumber": "2348087654321"
+        "businessId": "BIZ-1738259123456",
+        "decision": "FLAGGED_FOR_REVIEW",
+        "trustScore": 65,
+        "statementAnalysis": {
+          "periodCovered": {
+            "startDate": "2025-07-30T00:00:00.000Z",
+            "endDate": "2026-01-30T00:00:00.000Z",
+            "monthsAnalyzed": 6
+          },
+          "incomeAnalysis": {
+            "totalIncome": 600000,
+            "avgMonthlyIncome": 100000,
+            "incomeConsistency": 85,
+            "incomeSources": [
+              {
+                "description": "Salary",
+                "frequency": "monthly",
+                "avgAmount": 100000
+              }
+            ]
+          },
+          "spendingAnalysis": {
+            "totalSpending": 480000,
+            "avgMonthlySpending": 80000,
+            "spendingCategories": {
+              "bills": 200000,
+              "loans": 100000,
+              "gambling": 0,
+              "transfers": 100000,
+              "other": 80000
+            }
+          },
+          "balanceAnalysis": {
+            "avgBalance": 50000,
+            "minBalance": 10000,
+            "maxBalance": 150000,
+            "closingBalance": 75000
+          },
+          "behaviorAnalysis": {
+            "transactionCount": 120,
+            "avgDailyTransactions": 0.67,
+            "bounceCount": 2,
+            "overdraftUsage": false
+          },
+          "debtProfile": {
+            "existingLoanRepayments": 16667,
+            "debtToIncomeRatio": 0.17
+          },
+          "affordabilityAssessment": {
+            "canAffordInstallment": true,
+            "monthlyInstallmentAmount": 20000,
+            "disposableIncome": 20000,
+            "affordabilityRatio": 1.0,
+            "cushion": 0
+          },
+          "riskFlags": [
+            {
+              "flag": "BOUNCED_TRANSACTIONS",
+              "severity": "MEDIUM",
+              "description": "Account has 2 bounced transactions"
+            }
+          ],
+          "ruleCompliance": {
+            "passedMinTrustScore": true,
+            "overallPass": true
+          }
         },
-        "trustEngineOutput": {
-          "trustScore": 65,
-          "decision": "FLAGGED_FOR_REVIEW",
-          "riskLevel": "MEDIUM"
-        },
-        "totalAmount": 100000,
-        "downPaymentAmount": 20000,
-        "installmentAmount": 20000,
-        "installmentCount": 4,
-        "createdAt": "2026-01-30T13:00:00.000Z"
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "totalItems": 1,
-      "totalPages": 1
+        "analyzedAt": "2026-01-30T13:05:00.000Z"
+      },
+      "totalAmount": 100000,
+      "downPaymentAmount": 20000,
+      "installmentAmount": 20000,
+      "installmentCount": 4,
+      "frequency": "monthly",
+      "createdAt": "2026-01-30T13:00:00.000Z"
     }
-  },
-  "message": "Applications retrieved successfully"
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -515,7 +647,22 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
       "accountNumber": "0123456789",
       "bankCode": "058",
       "bvn": "12345678901"
-      // Note: Sensitive data is encrypted at rest
+    },
+    "openai": {
+      "fileId": "file-abc123xyz456",
+      "filename": "bank_statement_john_doe.pdf",
+      "uploadedAt": "2026-01-30T13:02:00.000Z",
+      "analysis": {
+        "trustScore": 85,
+        "decision": "AUTO_APPROVED",
+        "riskLevel": "LOW",
+        "factors": {
+          "accountAge": "GOOD",
+          "transactionVolume": "HIGH",
+          "averageBalance": "ADEQUATE",
+          "financialStability": "STABLE"
+        }
+      }
     },
     "trustEngineOutput": {
       "trustScore": 85,
@@ -529,13 +676,13 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
         "financialStability": "STABLE"
       }
     },
-    "installmentPlan": {
-      "totalAmount": 100000,
-      "downPaymentAmount": 20000,
-      "installmentAmount": 20000,
-      "installmentCount": 4,
-      "frequency": "monthly"
-    },
+    "trustEngineOutputId": "TEO-1738259400000",
+    "analyzedAt": "2026-01-30T13:05:00.000Z",
+    "totalAmount": 100000,
+    "downPaymentAmount": 20000,
+    "installmentAmount": 20000,
+    "installmentCount": 4,
+    "frequency": "monthly",
     "paymentStatus": {
       "totalPaid": 40000,
       "outstandingBalance": 60000,
@@ -547,8 +694,7 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
     "virtualAccountNumber": "9012345678",
     "createdAt": "2026-01-30T13:00:00.000Z",
     "updatedAt": "2026-01-30T14:00:00.000Z"
-  },
-  "message": "Application retrieved successfully"
+  }
 }
 ```
 
@@ -575,8 +721,7 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
     "status": "MANDATE_CREATED",
     "pwaMandateRef": "REF-1738259456789",
     "message": "Application approved. PWA mandate created successfully."
-  },
-  "message": "Application approved successfully"
+  }
 }
 ```
 
@@ -605,8 +750,7 @@ PENDING → ANALYZING → [AUTO_APPROVED | FLAGGED_FOR_REVIEW | AUTO_DECLINED]
     "applicationId": "APP-1738259345678",
     "status": "DECLINED",
     "declineReason": "Insufficient transaction history"
-  },
-  "message": "Application declined successfully"
+  }
 }
 ```
 
@@ -634,24 +778,26 @@ Payments are automatically created and processed via PWA (Pay with Account) webh
 ```json
 {
   "success": true,
-  "data": {
-    "payments": [
-      {
-        "transactionId": "INST-PAY-1738259567890",
-        "applicationId": "APP-1738259345678",
-        "amount": 20000,
-        "status": "SUCCESSFUL",
-        "paymentNumber": 1,
-        "totalPayments": 4,
-        "scheduledDate": "2026-02-01T00:00:00.000Z",
-        "completedDate": "2026-02-01T10:30:00.000Z",
-        "pwaTransactionRef": "PWA-TXN-123456",
-        "customerName": "John Doe"
-      }
-    ],
-    "pagination": { /* ... */ }
-  },
-  "message": "Payments retrieved successfully"
+  "data": [
+    {
+      "transactionId": "INST-PAY-1738259567890",
+      "applicationId": "APP-1738259345678",
+      "amount": 20000,
+      "status": "SUCCESSFUL",
+      "paymentNumber": 1,
+      "totalPayments": 4,
+      "scheduledDate": "2026-02-01T00:00:00.000Z",
+      "completedDate": "2026-02-01T10:30:00.000Z",
+      "pwaTransactionRef": "PWA-TXN-123456",
+      "customerName": "John Doe"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -679,12 +825,16 @@ Payments are automatically created and processed via PWA (Pay with Account) webh
     "pwaPaymentId": "PWA-PAY-123456",
     "application": {
       "applicationId": "APP-1738259345678",
-      "customerDetails": { /* ... */ }
+      "customerDetails": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phoneNumber": "2348087654321"
+      }
     },
     "createdAt": "2026-02-01T00:00:00.000Z",
     "updatedAt": "2026-02-01T10:30:00.000Z"
-  },
-  "message": "Payment retrieved successfully"
+  }
 }
 ```
 
@@ -758,21 +908,23 @@ Withdraw collected funds from TrustWallet to settlement account.
 ```json
 {
   "success": true,
-  "data": {
-    "withdrawals": [
-      {
-        "withdrawalId": "WTH-1738259678901",
-        "trustWalletId": "TW-1738259234567",
-        "trustWalletName": "Computer Science Department Fees",
-        "amount": 50000,
-        "status": "COMPLETED",
-        "requestedAt": "2026-01-30T15:00:00.000Z",
-        "completedAt": "2026-01-30T15:30:00.000Z"
-      }
-    ],
-    "pagination": { /* ... */ }
-  },
-  "message": "Withdrawals retrieved successfully"
+  "data": [
+    {
+      "withdrawalId": "WTH-1738259678901",
+      "trustWalletId": "TW-1738259234567",
+      "trustWalletName": "Computer Science Department Fees",
+      "amount": 50000,
+      "status": "COMPLETED",
+      "requestedAt": "2026-01-30T15:00:00.000Z",
+      "completedAt": "2026-01-30T15:30:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -830,8 +982,7 @@ Withdraw collected funds from TrustWallet to settlement account.
         "approvalRate": 80
       }
     ]
-  },
-  "message": "Dashboard overview retrieved successfully"
+  }
 }
 ```
 
@@ -877,8 +1028,7 @@ Withdraw collected funds from TrustWallet to settlement account.
       "totalAmount": 100000,
       "averageTrustScore": 85
     }
-  },
-  "message": "Report generated successfully"
+  }
 }
 ```
 
@@ -935,8 +1085,7 @@ APP-1738259345678,John Doe,john.doe@example.com,CS Fees,COMPLETED,85,100000,2026
     "revenueByMonth": [
       { "month": "2026-01", "revenue": 1200000 }
     ]
-  },
-  "message": "Analytics retrieved successfully"
+  }
 }
 ```
 
@@ -1006,8 +1155,7 @@ These APIs don't require authentication - they're for customers applying for ins
       "interestRate": 0
     },
     "isActive": true
-  },
-  "message": "TrustWallet information retrieved successfully"
+  }
 }
 ```
 
@@ -1059,8 +1207,7 @@ fetch('http://localhost:3030/public/trustwallet/TW-1738259234567/apply', {
     "applicationId": "APP-1738259345678",
     "status": "PENDING",
     "message": "Application submitted successfully. We'll analyze your bank statement and notify you shortly."
-  },
-  "message": "Application submitted successfully"
+  }
 }
 ```
 
@@ -1104,8 +1251,7 @@ fetch('http://localhost:3030/public/trustwallet/TW-1738259234567/apply', {
       "nextPaymentDate": "2026-03-01T00:00:00.000Z"
     },
     "createdAt": "2026-01-30T13:00:00.000Z"
-  },
-  "message": "Application status retrieved successfully"
+  }
 }
 ```
 
@@ -1190,8 +1336,7 @@ For internal admin users to monitor system health and view all data.
       "nodeVersion": "v20.11.0",
       "environment": "development"
     }
-  },
-  "message": "System health check completed"
+  }
 }
 ```
 
@@ -1211,8 +1356,7 @@ For internal admin users to monitor system health and view all data.
       "last24Hours": 45,
       "successRate": 98.5
     }
-  },
-  "message": "PWA health check completed"
+  }
 }
 ```
 
@@ -1233,24 +1377,26 @@ For internal admin users to monitor system health and view all data.
 ```json
 {
   "success": true,
-  "data": {
-    "logs": [
-      {
-        "logId": "LOG-1738259789012",
-        "action": "application.approved",
-        "actorId": "BIZ-1738259123456",
-        "actorType": "Business",
-        "resourceType": "Application",
-        "resourceId": "APP-1738259345678",
-        "metadata": {
-          "reason": "Good customer history"
-        },
-        "timestamp": "2026-01-30T14:00:00.000Z"
-      }
-    ],
-    "pagination": { /* ... */ }
-  },
-  "message": "Audit logs retrieved successfully"
+  "data": [
+    {
+      "logId": "LOG-1738259789012",
+      "action": "application.approved",
+      "actorId": "BIZ-1738259123456",
+      "actorType": "Business",
+      "resourceType": "Application",
+      "resourceId": "APP-1738259345678",
+      "metadata": {
+        "reason": "Good customer history"
+      },
+      "timestamp": "2026-01-30T14:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -1272,26 +1418,28 @@ For internal admin users to monitor system health and view all data.
 ```json
 {
   "success": true,
-  "data": {
-    "applications": [
-      {
-        "applicationId": "APP-1738259345678",
-        "businessId": "BIZ-1738259123456",
-        "businessName": "Lagos State University",
-        "trustWalletId": "TW-1738259234567",
-        "trustWalletName": "CS Fees",
-        "customerName": "John Doe",
-        "customerEmail": "john.doe@example.com",
-        "status": "ACTIVE",
-        "trustScore": 85,
-        "totalAmount": 100000,
-        "totalPaid": 40000,
-        "createdAt": "2026-01-30T13:00:00.000Z"
-      }
-    ],
-    "pagination": { /* ... */ }
-  },
-  "message": "Applications retrieved successfully"
+  "data": [
+    {
+      "applicationId": "APP-1738259345678",
+      "businessId": "BIZ-1738259123456",
+      "businessName": "Lagos State University",
+      "trustWalletId": "TW-1738259234567",
+      "trustWalletName": "CS Fees",
+      "customerName": "John Doe",
+      "customerEmail": "john.doe@example.com",
+      "status": "ACTIVE",
+      "trustScore": 85,
+      "totalAmount": 100000,
+      "totalPaid": 40000,
+      "createdAt": "2026-01-30T13:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "totalCount": 1,
+    "totalPages": 1
+  }
 }
 ```
 
@@ -1883,8 +2031,9 @@ function usePagination(fetchFunction, initialParams = {}) {
       setLoading(true);
       try {
         const response = await fetchFunction(params);
-        setData(response.data.items || response.data.applications || []);
-        setPagination(response.data.pagination);
+        // List endpoints return data as an array directly
+        setData(Array.isArray(response.data) ? response.data : []);
+        setPagination(response.pagination);
       } catch (error) {
         console.error('Fetch error:', error);
       } finally {
