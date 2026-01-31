@@ -414,7 +414,7 @@ export function BusinessDetailsStep({
 
           {/* Verified Account Name */}
           {formData.settlementAccountName && (
-            <div className="bg-gray-50 px-4 py-3 rounded-md">
+            <div className="bg-gray-50 px-4 py-3 rounded-md hidden">
               <div className="text-xs text-gray-600 font-medium mb-1">
                 VERIFIED ACCOUNT NAME
               </div>
