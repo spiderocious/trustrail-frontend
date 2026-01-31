@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-} from "@tanstack/react-table";
 import { AuthGuard } from "@features/auth/guards/auth-guard";
-import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
-import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
-import {
-  useApplicationsList,
-  ApplicationListItem,
-} from "../api/use-applications-list";
 import { formatCurrency } from "@features/dashboard/helpers/format-currency";
 import { formatDate } from "@features/dashboard/helpers/format-date";
+import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
+import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { FaEye, FaFileExport, FaSearch, FaSpinner } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import {
+  ApplicationListItem,
+  useApplicationsList,
+} from "../api/use-applications-list";
 import { exportApplicationsToCSV } from "../helpers/export-applications-csv";
-import { FaSpinner, FaEye, FaFileExport, FaSearch } from "react-icons/fa";
 
 const columnHelper = createColumnHelper<ApplicationListItem>();
 
@@ -254,7 +254,7 @@ function ApplicationsListContent() {
     <div className="flex h-screen bg-gray-50">
       <DashboardSidebar />
       <div className="flex-1 overflow-y-auto">
-        <DashboardHeader businessName="feranmi" />
+        <DashboardHeader />
         <div className="p-8">
           {/* Header */}
           <div className="mb-6">

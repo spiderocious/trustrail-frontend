@@ -1,11 +1,6 @@
-import { FaSearch, FaBell } from "react-icons/fa";
 import { getAuthData } from "../../../auth/helpers/token-storage";
 
-interface DashboardHeaderProps {
-  businessName?: string;
-}
-
-export function DashboardHeader({ businessName = "" }: DashboardHeaderProps) {
+export function DashboardHeader() {
   // Get initials from business name
   const getInitials = (name: string) => {
     return name
