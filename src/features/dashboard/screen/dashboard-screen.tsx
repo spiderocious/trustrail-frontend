@@ -6,6 +6,7 @@ import { formatCurrencyCompact } from "../helpers/format-currency";
 import { formatTimeAgo } from "../helpers/format-date";
 import { FaPlus, FaSpinner } from "react-icons/fa";
 import { businessName } from "../../auth/helpers/token-storage";
+import { Link } from "react-router-dom";
 
 function DashboardScreenContent() {
   const { data, isLoading, error } = useDashboardOverview();
@@ -97,10 +98,12 @@ function DashboardScreenContent() {
                   today.
                 </p>
               </div>
-              <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                <FaPlus />
-                Create TrustWallet
-              </button>
+              <Link to="/trustwallets/create">
+                <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+                  <FaPlus />
+                  Create TrustWallet
+                </button>
+              </Link>
             </div>
 
             {/* Stats Grid - All data from API */}
