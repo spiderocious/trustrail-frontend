@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { API_BASE_URL, ENDPOINTS } from "@shared/constants/api";
+import { apiClient } from "@shared/helpers/api-client";
+import { API_ENDPOINTS } from "@shared/constants/api";
 
 interface DeclineApplicationRequest {
   applicationId: string;
@@ -18,28 +19,13 @@ interface DeclineApplicationResponse {
 async function declineApplication(
   request: DeclineApplicationRequest,
 ): Promise<DeclineApplicationResponse> {
-  const token = localStorage.getItem("authToken");
-
-  const response = await fetch(
-    `${API_BASE_URL}/api/applications/${request.applicationId}/decline`,
+  return apiClient.post<DeclineApplicationResponse>(
+    API_ENDPOINTS.APPLICATIONS.DECLINE(request.applicationId),
     {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        reason: request.reason,
-      }),
+      reason: request.reason,
     },
+    true,
   );
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Failed to decline application");
-  }
-
-  return response.json();
 }
 
 export function useDeclineApplication() {
@@ -47,12 +33,12 @@ export function useDeclineApplication() {
 
   return useMutation({
     mutationFn: declineApplication,
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({
         queryKey: ["application", variables.applicationId],
       });
-      queryClient.invalidateQueries({ queryKey: ["applications"] });
+      queryClient.invalidateQueries({ queryKey: ["applications-list"] });
       queryClient.invalidateQueries({ queryKey: ["trustWalletAnalytics"] });
     },
   });

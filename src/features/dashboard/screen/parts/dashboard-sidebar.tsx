@@ -1,16 +1,12 @@
-import { NavLink } from "react-router-dom";
-import {
-  FaChartLine,
-  FaWallet,
-  FaFile,
-  FaMoneyBillWave,
-  FaArrowDown,
-  FaGear,
-  FaArrowRightFromBracket,
-  FaTableCells,
-} from "react-icons/fa6";
-import { ROUTES } from "@shared/constants/routes/routes";
 import { useAuth } from "@features/auth/providers/auth-provider";
+import { ROUTES } from "@shared/constants/routes/routes";
+import {
+  FaArrowRightFromBracket,
+  FaFile,
+  FaTableCells,
+  FaWallet,
+} from "react-icons/fa6";
+import { NavLink } from "react-router-dom";
 
 export function DashboardSidebar() {
   const { logout } = useAuth();
@@ -27,16 +23,16 @@ export function DashboardSidebar() {
       to: "/applications",
       icon: FaFile,
       label: "Applications",
-      badge: 5,
-    },
-    { to: "/payments", icon: FaMoneyBillWave, label: "Payments", badge: null },
-    {
-      to: "/withdrawals",
-      icon: FaArrowDown,
-      label: "Withdrawals",
       badge: null,
     },
-    { to: "/analytics", icon: FaChartLine, label: "Analytics", badge: null },
+    // { to: "/payments", icon: FaMoneyBillWave, label: "Payments", badge: null },
+    // {
+    //   to: "/withdrawals",
+    //   icon: FaArrowDown,
+    //   label: "Withdrawals",
+    //   badge: null,
+    // },
+    // { to: "/analytics", icon: FaChartLine, label: "Analytics", badge: null },
   ];
 
   return (
@@ -78,13 +74,6 @@ export function DashboardSidebar() {
 
       {/* Bottom Actions */}
       <div className="p-4 border-t border-gray-200 space-y-1">
-        <NavLink
-          to="/settings"
-          className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-        >
-          <FaGear className="text-xl" />
-          <span className="font-medium">Settings</span>
-        </NavLink>
         <button
           onClick={logout}
           className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"

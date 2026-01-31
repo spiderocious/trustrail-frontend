@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { API_CONFIG, API_ENDPOINTS } from "@/shared/constants/api";
+import { API_CONFIG, API_ENDPOINTS } from "@shared/constants/api";
 import type {
   ApplicationSubmitResponse,
   CustomerApplicationData,

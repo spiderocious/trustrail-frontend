@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { FaInfoCircle, FaLock, FaCheckCircle } from "react-icons/fa";
-import { NIGERIAN_BANKS } from "@/features/auth/helpers/nigerian-banks";
-import {
-  validateAccountNumber,
-  validateBankCode,
-} from "@/features/auth/helpers/validation";
+import { NIGERIAN_BANKS } from "@features/auth/helpers/nigerian-banks";
+import { validateAccountNumber } from "@features/auth/helpers/validation";
 import type { CustomerApplicationData } from "../../types";
 
 interface Step2BankAccountDetailsProps {

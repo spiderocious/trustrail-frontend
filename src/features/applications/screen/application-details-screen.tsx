@@ -4,7 +4,10 @@ import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sid
 import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
 import { useApplicationDetails } from "../api/use-application-details";
 import { formatCurrency } from "@features/dashboard/helpers/format-currency";
-import { formatDate, formatDateTime } from "@features/dashboard/helpers/format-date";
+import {
+  formatDate,
+  formatDateTime,
+} from "@features/dashboard/helpers/format-date";
 import {
   FaSpinner,
   FaCheckCircle,
@@ -19,7 +22,6 @@ import {
   FaExchangeAlt,
   FaMoneyBill,
   FaCreditCard,
-  FaUser,
   FaPhone,
   FaFileAlt,
   FaShieldAlt,
@@ -36,7 +38,6 @@ function ApplicationDetailsContent() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data, isLoading, error } = useApplicationDetails(id);
-  const [showFullAnalysis, setShowFullAnalysis] = useState(false);
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [notification, setNotification] = useState<{

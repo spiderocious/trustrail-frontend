@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { API_BASE_URL, ENDPOINTS } from "@shared/constants/api";
+import { apiClient } from "@shared/helpers/api-client";
+import { API_ENDPOINTS } from "@shared/constants/api";
 
 interface ApproveApplicationRequest {
   applicationId: string;
@@ -18,28 +19,13 @@ interface ApproveApplicationResponse {
 async function approveApplication(
   request: ApproveApplicationRequest,
 ): Promise<ApproveApplicationResponse> {
-  const token = localStorage.getItem("authToken");
-
-  const response = await fetch(
-    `${API_BASE_URL}/api/applications/${request.applicationId}/approve`,
+  return apiClient.post<ApproveApplicationResponse>(
+    API_ENDPOINTS.APPLICATIONS.APPROVE(request.applicationId),
     {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        reason: request.reason,
-      }),
+      reason: request.reason,
     },
+    true,
   );
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Failed to approve application");
-  }
-
-  return response.json();
 }
 
 export function useApproveApplication() {
@@ -47,12 +33,12 @@ export function useApproveApplication() {
 
   return useMutation({
     mutationFn: approveApplication,
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate and refetch relevant queries
       queryClient.invalidateQueries({
         queryKey: ["application", variables.applicationId],
       });
-      queryClient.invalidateQueries({ queryKey: ["applications"] });
+      queryClient.invalidateQueries({ queryKey: ["applications-list"] });
       queryClient.invalidateQueries({ queryKey: ["trustWalletAnalytics"] });
     },
   });

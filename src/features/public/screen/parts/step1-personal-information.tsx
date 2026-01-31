@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import {
   validateEmail,
   validatePhoneNumber,
-} from "@/features/auth/helpers/validation";
+} from "@features/auth/helpers/validation";
 import type { CustomerApplicationData } from "../../types";
 
 interface Step1PersonalInformationProps {

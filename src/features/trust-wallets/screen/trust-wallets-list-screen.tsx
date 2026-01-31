@@ -5,11 +5,7 @@ import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sid
 import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
 import { useTrustWallets } from "../api/use-trust-wallets";
 import { formatCurrencyCompact } from "@features/dashboard/helpers/format-currency";
-import {
-  getFrequencyLabel,
-  getStatusColor,
-  calculateInstallmentAmount,
-} from "../helpers/calculations";
+import { getStatusColor } from "../helpers/calculations";
 import {
   FaPlus,
   FaSpinner,
@@ -182,12 +178,6 @@ function TrustWalletsListContent() {
                       Target Amount
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                      Installments
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
-                      Frequency
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
                       Applications
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">
@@ -231,24 +221,10 @@ function TrustWalletsListContent() {
                               wallet.installmentPlan.totalAmount,
                             )}
                           </td>
+
                           <td className="px-6 py-4 text-gray-900">
-                            {wallet.installmentPlan.installmentCount} ×{" "}
-                            {formatCurrencyCompact(
-                              calculateInstallmentAmount(
-                                wallet.installmentPlan.totalAmount,
-                                wallet.installmentPlan.downPaymentPercentage,
-                                wallet.installmentPlan.installmentCount,
-                              ),
-                            )}
+                            {wallet.applicationCount}
                           </td>
-                          <td className="px-6 py-4">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 capitalize">
-                              {getFrequencyLabel(
-                                wallet.installmentPlan.frequency,
-                              )}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-gray-900">-</td>
                           <td className="px-6 py-4">
                             <span
                               className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusColors.bg} ${statusColors.text}`}

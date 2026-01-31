@@ -15,13 +15,8 @@ import {
 } from "../api/use-applications-list";
 import { formatCurrency } from "@features/dashboard/helpers/format-currency";
 import { formatDate } from "@features/dashboard/helpers/format-date";
-import {
-  FaSpinner,
-  FaEye,
-  FaFileExport,
-  FaFilter,
-  FaSearch,
-} from "react-icons/fa";
+import { exportApplicationsToCSV } from "../helpers/export-applications-csv";
+import { FaSpinner, FaEye, FaFileExport, FaSearch } from "react-icons/fa";
 
 const columnHelper = createColumnHelper<ApplicationListItem>();
 
@@ -29,10 +24,10 @@ function ApplicationsListContent() {
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
   const [statusFilter, setStatusFilter] = useState("");
-  const [walletFilter, setWalletFilter] = useState("");
+  const [walletFilter, _] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data, isLoading, error } = useApplicationsList({
+  const { data, isLoading } = useApplicationsList({
     page,
     limit,
     status: statusFilter,
@@ -259,7 +254,7 @@ function ApplicationsListContent() {
     <div className="flex h-screen bg-gray-50">
       <DashboardSidebar />
       <div className="flex-1 overflow-y-auto">
-        <DashboardHeader businessName="feranmi"/>
+        <DashboardHeader businessName="feranmi" />
         <div className="p-8">
           {/* Header */}
           <div className="mb-6">
@@ -349,7 +344,10 @@ function ApplicationsListContent() {
                 <option value="ACTIVE">Active</option>
                 <option value="COMPLETED">Completed</option>
               </select>
-              <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+              <button
+                onClick={() => exportApplicationsToCSV(data?.data || [])}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
                 <FaFileExport />
                 Export CSV
               </button>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaUpload, FaFileAlt, FaTimes, FaCheckCircle } from "react-icons/fa";
+import { FaUpload, FaTimes, FaCheckCircle } from "react-icons/fa";
 import type { CustomerApplicationData } from "../../types";
 
 interface Step3BankStatementUploadProps {

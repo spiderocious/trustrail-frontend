@@ -7,10 +7,15 @@ export interface PublicTrustWallet {
     totalAmount: number;
     downPaymentPercentage: number;
     installmentCount: number;
-    frequency: 'weekly' | 'monthly';
+    frequency: "weekly" | "monthly";
     interestRate: number;
   };
   requirements: string[];
+}
+
+export interface PublicTrustWalletResponse {
+  success: boolean;
+  data: PublicTrustWallet;
 }
 
 export interface CustomerApplicationData {
@@ -40,6 +45,7 @@ export interface ApplicationStatus {
   applicationId: string;
   status: ApplicationStatusType;
   message: string;
+  estimatedTime?: string;
   trustWalletName?: string;
   businessName?: string;
   customerName?: string;
@@ -65,16 +71,16 @@ export interface ApplicationStatus {
 }
 
 export type ApplicationStatusType =
-  | 'PENDING'
-  | 'PENDING_ANALYSIS'
-  | 'ANALYZING'
-  | 'AUTO_APPROVED'
-  | 'FLAGGED_FOR_REVIEW'
-  | 'AUTO_DECLINED'
-  | 'APPROVED'
-  | 'DECLINED'
-  | 'MANDATE_CREATED'
-  | 'MANDATE_ACTIVE'
-  | 'ACTIVE'
-  | 'COMPLETED'
-  | 'DEFAULTED';
+  | "PENDING"
+  | "PENDING_ANALYSIS"
+  | "ANALYZING"
+  | "AUTO_APPROVED"
+  | "FLAGGED_FOR_REVIEW"
+  | "AUTO_DECLINED"
+  | "APPROVED"
+  | "DECLINED"
+  | "MANDATE_CREATED"
+  | "MANDATE_ACTIVE"
+  | "ACTIVE"
+  | "COMPLETED"
+  | "DEFAULTED";

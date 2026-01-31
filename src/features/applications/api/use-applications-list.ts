@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@shared/helpers/api-client";
 import { API_ENDPOINTS } from "@shared/constants/api";
+import { TrustEngineOutput } from "../../trust-wallets/api/use-trust-wallet-applications";
 
 export interface ApplicationListItem {
   applicationId: string;
@@ -14,10 +15,7 @@ export interface ApplicationListItem {
     email: string;
     phoneNumber: string;
   };
-  trustEngineOutput?: {
-    trustScore: number;
-    decision: string;
-  };
+  trustEngineOutput?: TrustEngineOutput;
   totalAmount: number;
   downPaymentRequired: number;
   installmentAmount: number;

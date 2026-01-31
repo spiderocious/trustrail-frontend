@@ -1,24 +1,23 @@
-import { useParams, Link } from "react-router-dom";
 import { AuthGuard } from "@features/auth/guards/auth-guard";
-import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
-import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
-import { useTrustWalletDetails } from "../api/use-trust-wallet-details";
-import { useTrustWalletAnalytics } from "../api/use-trust-wallet-analytics";
 import { formatCurrency } from "@features/dashboard/helpers/format-currency";
+import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
+import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
+import { useState } from "react";
 import {
-  getFrequencyLabel,
+  FaChartBar,
+  FaCheckCircle,
+  FaCopy,
+  FaSpinner,
+  FaTimesCircle,
+} from "react-icons/fa";
+import { Link, useParams } from "react-router-dom";
+import { useTrustWalletAnalytics } from "../api/use-trust-wallet-analytics";
+import { useTrustWalletDetails } from "../api/use-trust-wallet-details";
+import {
   calculateDownPaymentAmount,
   calculateInstallmentAmount,
+  getFrequencyLabel,
 } from "../helpers/calculations";
-import {
-  FaSpinner,
-  FaCopy,
-  FaQrcode,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaChartBar,
-} from "react-icons/fa";
-import { useState } from "react";
 
 function TrustWalletDetailsContent() {
   const { id } = useParams<{ id: string }>();
@@ -136,13 +135,7 @@ function TrustWalletDetailsContent() {
                       {copied ? <FaCheckCircle /> : <FaCopy />}
                       {copied ? "Copied" : "Copy"}
                     </button>
-                    <button className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
-                      <FaQrcode className="text-xl text-gray-600" />
-                    </button>
                   </div>
-                </div>
-                <div className="ml-4 w-32 h-32 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center">
-                  <FaQrcode className="text-6xl text-gray-300" />
                 </div>
               </div>
             </div>

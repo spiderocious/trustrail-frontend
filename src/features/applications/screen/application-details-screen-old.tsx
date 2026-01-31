@@ -1,21 +1,21 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
 import { AuthGuard } from "@features/auth/guards/auth-guard";
-import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
-import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
-import { useApplicationDetails } from "../api/use-application-details";
 import { formatCurrency } from "@features/dashboard/helpers/format-currency";
 import { formatDate } from "@features/dashboard/helpers/format-date";
+import { DashboardHeader } from "@features/dashboard/screen/parts/dashboard-header";
+import { DashboardSidebar } from "@features/dashboard/screen/parts/dashboard-sidebar";
 import {
-  FaSpinner,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaExclamationTriangle,
-  FaClock,
-  FaEnvelope,
-  FaDownload,
-  FaEye,
   FaChartLine,
+  FaCheckCircle,
+  FaClock,
+  FaDownload,
+  FaEnvelope,
+  FaExclamationTriangle,
+  FaEye,
+  FaSpinner,
+  FaTimesCircle,
 } from "react-icons/fa";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useApplicationDetails } from "../api/use-application-details";
 
 function ApplicationDetailsContent() {
   const { id } = useParams<{ id: string }>();
@@ -107,20 +107,6 @@ function ApplicationDetailsContent() {
           </span>
         );
     }
-  };
-
-  const getTrustScoreColor = () => {
-    if (trustScore >= 80) return "text-green-600";
-    if (trustScore >= 60) return "text-yellow-600";
-    if (trustScore >= 40) return "text-orange-600";
-    return "text-red-600";
-  };
-
-  const getTrustScoreBg = () => {
-    if (trustScore >= 80) return "bg-green-100";
-    if (trustScore >= 60) return "bg-yellow-100";
-    if (trustScore >= 40) return "bg-orange-100";
-    return "bg-red-100";
   };
 
   const getTrustScoreTier = () => {

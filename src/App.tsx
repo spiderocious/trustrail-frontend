@@ -11,6 +11,10 @@ import { TrustWalletDetailsScreen } from "@features/trust-wallets/screen/trust-w
 import { TrustWalletApplicationsScreen } from "@features/trust-wallets/screen/trust-wallet-applications-screen";
 import { ApplicationsListScreen } from "@features/applications/screen/applications-list-screen";
 import { ApplicationDetailsScreen } from "@features/applications/screen/application-details-screen";
+import { PublicTrustWalletScreen } from "@features/public/screen/public-trustwallet-screen";
+import { ApplicationFormScreen } from "@features/public/screen/application-form-screen";
+import { ApplicationSubmittedScreen } from "@features/public/screen/application-submitted-screen";
+import { ApplicationStatusScreen } from "@features/public/screen/application-status-screen";
 import { ROUTES } from "@shared/constants/routes/routes";
 
 function App() {
@@ -42,7 +46,29 @@ function App() {
             element={<TrustWalletApplicationsScreen />}
           />
           <Route path="/applications" element={<ApplicationsListScreen />} />
-          <Route path="/applications/:id" element={<ApplicationDetailsScreen />} />
+          <Route
+            path="/applications/:id"
+            element={<ApplicationDetailsScreen />}
+          />
+
+          {/* Public Customer Routes (No Auth Required) */}
+          <Route
+            path="/apply/:trustWalletId"
+            element={<PublicTrustWalletScreen />}
+          />
+          <Route
+            path="/apply/:trustWalletId/form"
+            element={<ApplicationFormScreen />}
+          />
+          <Route
+            path="/application/:applicationId/submitted"
+            element={<ApplicationSubmittedScreen />}
+          />
+          <Route path="/status" element={<ApplicationStatusScreen />} />
+          <Route
+            path="/status/:applicationId"
+            element={<ApplicationStatusScreen />}
+          />
         </Routes>
       </Suspense>
     </AuthProvider>

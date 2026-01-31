@@ -28,6 +28,7 @@ export interface TrustWallet {
   publicUrl: string;
   createdAt: string;
   updatedAt: string;
+  applicationCount: number;
   __v: number;
 }
 

@@ -1,15 +1,15 @@
+import { API_ENDPOINTS } from "@shared/constants/api";
+import { apiClient } from "@shared/helpers/api-client";
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "@/shared/helpers/api-client";
-import { API_ENDPOINTS } from "@/shared/constants/api";
-import type { PublicTrustWallet } from "../types";
+import type { PublicTrustWalletResponse } from "../types";
 
 export function usePublicTrustWallet(trustWalletId: string) {
   return useQuery({
     queryKey: ["public-trustwallet", trustWalletId],
     queryFn: async () => {
-      const response = await apiClient.get<PublicTrustWallet>(
+      const response = await apiClient.get<PublicTrustWalletResponse>(
         API_ENDPOINTS.PUBLIC.TRUSTWALLET(trustWalletId),
-        { requiresAuth: false }
+        false,
       );
       return response;
     },
