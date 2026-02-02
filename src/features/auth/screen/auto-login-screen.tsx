@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { FaDiamond } from "react-icons/fa6";
 import { ROUTES } from "@shared/constants/routes/routes";
+import { ApiClientError } from "@shared/helpers/api-client";
+import { useEffect, useState } from "react";
+import { FaDiamond } from "react-icons/fa6";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useLogin } from "../api/use-login";
 import { useAuth } from "../providers/auth-provider";
-import { ApiClientError } from "@shared/helpers/api-client";
 
 export function AutoLoginScreen() {
   const [searchParams] = useSearchParams();
@@ -15,6 +15,10 @@ export function AutoLoginScreen() {
   const loginMutation = useLogin();
 
   useEffect(() => {
+    handleAutoLogin();
+  }, []);
+
+  async function handleAutoLogin() {
     const token = searchParams.get("token");
 
     if (!token) {
@@ -55,12 +59,12 @@ export function AutoLoginScreen() {
               setError("Login failed. Please try again.");
             }
           },
-        }
+        },
       );
     } catch {
       setError("Invalid token encoding");
     }
-  }, [searchParams, login, loginMutation, navigate]);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
