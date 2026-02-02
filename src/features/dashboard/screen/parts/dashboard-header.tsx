@@ -1,6 +1,11 @@
+import { FaBars } from "react-icons/fa6";
 import { getAuthData } from "../../../auth/helpers/token-storage";
 
-export function DashboardHeader() {
+interface DashboardHeaderProps {
+  onMenuClick?: () => void;
+}
+
+export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
   // Get initials from business name
   const getInitials = (name: string) => {
     return name
@@ -15,14 +20,22 @@ export function DashboardHeader() {
   const businessDisplayName = businessData?.businessName || "Business";
 
   return (
-    <header className="bg-white border-b border-gray-200 px-8 py-4">
+    <header className="bg-white border-b border-gray-200 px-4 sm:px-8 py-4">
       <div className="flex items-center justify-between">
-        {/* Business Badge */}
-        <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-md">
-          <span className="text-sm font-semibold text-gray-700">
-            {getInitials(businessDisplayName)}
-          </span>
-          <span className="text-sm text-gray-600">{businessDisplayName}</span>
+        {/* Mobile menu button + Business Badge */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onMenuClick}
+            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md"
+          >
+            <FaBars className="text-xl" />
+          </button>
+          <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-md">
+            <span className="text-sm font-semibold text-gray-700">
+              {getInitials(businessDisplayName)}
+            </span>
+            <span className="text-sm text-gray-600">{businessDisplayName}</span>
+          </div>
         </div>
 
         {/* Search & Actions */}

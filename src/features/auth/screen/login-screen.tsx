@@ -92,7 +92,7 @@ function LoginScreenContent() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="p-6 flex items-center justify-between">
+      <header className="p-4 sm:p-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <FaDiamond className="text-blue-600 text-2xl" />
           <span className="text-xl font-bold text-gray-900">TrustRail</span>
@@ -106,7 +106,7 @@ function LoginScreenContent() {
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
           {/* Card */}
-          <div className="bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white rounded-lg shadow-md p-5 sm:p-8">
             {/* Icon */}
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
@@ -181,7 +181,7 @@ function LoginScreenContent() {
               </div>
 
               {/* Keep me signed in & Forgot password */}
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -239,7 +239,7 @@ function LoginScreenContent() {
       </div>
 
       {/* Footer */}
-      <footer className="p-6 text-center">
+      <footer className="p-4 sm:p-6 text-center">
         <p className="text-xs text-gray-500">
           © 2024 TrustRail Inc. All rights reserved. Professional installment
           payments for Nigeria.

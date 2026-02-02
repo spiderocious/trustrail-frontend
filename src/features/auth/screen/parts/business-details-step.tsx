@@ -141,7 +141,7 @@ export function BusinessDetailsStep({
   return (
     <div className="max-w-2xl mx-auto px-4">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
             TR
@@ -173,7 +173,7 @@ export function BusinessDetailsStep({
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-lg shadow-sm p-8">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">
           Create your TrustRail account
         </h1>
@@ -227,7 +227,7 @@ export function BusinessDetailsStep({
           </div>
 
           {/* Password */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password <span className="text-red-500">*</span>
@@ -437,7 +437,7 @@ export function BusinessDetailsStep({
 
       {/* Footer */}
       <div className="mt-8 text-center">
-        <div className="flex justify-center gap-6 text-sm text-gray-600">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm text-gray-600">
           <button className="hover:text-gray-900">Terms of Service</button>
           <button className="hover:text-gray-900">Privacy Policy</button>
           <button className="hover:text-gray-900">Contact Support</button>

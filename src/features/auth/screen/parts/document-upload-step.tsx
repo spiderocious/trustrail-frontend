@@ -160,7 +160,7 @@ export function DocumentUploadStep({
       </div>
 
       {/* Form Card */}
-      <div className="bg-white rounded-lg shadow-sm p-8">
+      <div className="bg-white rounded-lg shadow-sm p-4 sm:p-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">
           Upload Verification Documents
         </h1>
@@ -181,7 +181,7 @@ export function DocumentUploadStep({
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 onClick={() => cacFileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-6 sm:p-12 text-center cursor-pointer transition-colors ${
                   isDragging
                     ? "border-blue-500 bg-blue-50"
                     : "border-gray-300 hover:border-blue-400"
@@ -267,7 +267,7 @@ export function DocumentUploadStep({
             <button
               type="button"
               onClick={() => optionalFilesInputRef.current?.click()}
-              className="w-full border-2 border-dashed border-gray-300 rounded-lg p-8 hover:border-blue-400 transition-colors flex flex-col items-center gap-2"
+              className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 sm:p-8 hover:border-blue-400 transition-colors flex flex-col items-center gap-2"
             >
               <FaPlus className="text-blue-600 text-2xl" />
               <span className="text-sm text-blue-600 font-medium">
@@ -285,7 +285,7 @@ export function DocumentUploadStep({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <button
               type="button"
               onClick={onBack}
