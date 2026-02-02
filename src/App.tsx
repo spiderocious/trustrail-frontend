@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { AuthProvider } from "@features/auth/providers/auth-provider";
 import { EntrypointScreen } from "@features/entrypoint/entrypoint-screen";
 import { LoginScreen } from "@features/auth/screen/login-screen";
+import { AutoLoginScreen } from "@features/auth/screen/auto-login-screen";
 import { RegisterScreen } from "@features/auth/screen/register-screen";
 import { DashboardScreen } from "@features/dashboard/screen/dashboard-screen";
 import { TrustWalletsListScreen } from "@features/trust-wallets/screen/trust-wallets-list-screen";
@@ -31,6 +32,7 @@ function App() {
           <Route path={ROUTES.ROOT} element={<EntrypointScreen />} />
           <Route path={ROUTES.AUTH.LOGIN} element={<LoginScreen />} />
           <Route path={ROUTES.AUTH.REGISTER} element={<RegisterScreen />} />
+          <Route path={ROUTES.AUTH.AUTO_LOGIN} element={<AutoLoginScreen />} />
           <Route path={ROUTES.DASHBOARD.ROOT} element={<DashboardScreen />} />
           <Route path="/trustwallets" element={<TrustWalletsListScreen />} />
           <Route

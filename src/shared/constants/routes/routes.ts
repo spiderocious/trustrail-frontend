@@ -5,6 +5,7 @@ export const ROUTES = {
   AUTH: {
     LOGIN: "/login",
     REGISTER: "/register",
+    AUTO_LOGIN: "/auto-login",
   },
   DASHBOARD: {
     ROOT: "/dashboard",
