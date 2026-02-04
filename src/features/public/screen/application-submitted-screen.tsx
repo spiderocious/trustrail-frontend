@@ -4,7 +4,7 @@ import {
   FaCheckDouble,
   FaFileAlt,
   FaFingerprint,
-  FaGem
+  FaGem,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useApplicationStatus } from "../api/use-application-status";
@@ -184,9 +184,6 @@ export function ApplicationSubmittedScreen() {
                     <p className="text-sm text-green-700">
                       {statusQuery.data?.data?.message ||
                         "Your application has been successfully processed."}
-                    </p>
-                    <p className="text-xs">
-                      Please check your email for further details.
                     </p>
                   </div>
                 </div>
